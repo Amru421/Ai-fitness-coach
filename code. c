@@ -1,0 +1,53 @@
+#include <stdio.h>
+
+int main() {
+    int goal, level;
+
+    printf("🏋️ AI Fitness Coach\n\n");
+
+    printf("Select Your Goal:\n");
+    printf("1. Weight Loss\n");
+    printf("2. Muscle Gain\n");
+    printf("3. General Fitness\n");
+    printf("Enter choice: ");
+    scanf("%d", &goal);
+
+    printf("\nSelect Your Experience Level:\n");
+    printf("1. Beginner\n");
+    printf("2. Intermediate\n");
+    printf("3. Advanced\n");
+    printf("Enter choice: ");
+    scanf("%d", &level);
+
+    printf("\n🏆 Your Workout Plan:\n");
+
+    if (goal == 1) {
+        if (level == 1)
+            printf("30 mins walking + 15 mins light cardio + yoga\n");
+        else if (level == 2)
+            printf("HIIT 20 mins + jogging 30 mins + core workout\n");
+        else
+            printf("HIIT 30 mins + strength training + cardio 30 mins\n");
+    }
+    else if (goal == 2) {
+        if (level == 1)
+            printf("Push-ups, squats, light weights (3 sets)\n");
+        else if (level == 2)
+            printf("Gym split: Chest/Back/Legs + protein diet\n");
+        else
+            printf("Heavy lifting + progressive overload + strict diet\n");
+    }
+    else if (goal == 3) {
+        if (level == 1)
+            printf("Yoga + walking + stretching\n");
+        else if (level == 2)
+            printf("Jogging + bodyweight exercises\n");
+        else
+            printf("CrossFit + endurance training\n");
+    }
+    else {
+        printf("Invalid choice!\n");
+    }
+
+    return 0;
+}
