@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Fitness Coach</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(120deg, #4facfe, #00f2fe);
+        color: #333;
+        text-align: center;
+        padding: 20px;
+    }
+    .container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 300px;
+        margin: auto;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    select, button {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: none;
+    }
+    button {
+        background: #4facfe;
+        color: white;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #007bff;
+    }
+    #result {
+        margin-top: 15px;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<h1>🏋️ AI Fitness Coach</h1>
+
+<div class="container">
+    <label>Select Goal:</label>
+    <select id="goal">
+        <option value="weight_loss">Weight Loss</option>
+        <option value="muscle_gain">Muscle Gain</option>
+        <option value="fitness">General Fitness</option>
+    </select>
+
+    <label>Experience Level:</label>
+    <select id="level">
+        <option value="beginner">Beginner</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="advanced">Advanced</option>
+    </select>
+
+    <button onclick="generatePlan()">Get Workout Plan</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+function generatePlan() {
+    let goal = document.getElementById("goal").value;
+    let level = document.getElementById("level").value;
+    let plan = "";
+
+    if (goal === "weight_loss") {
+        if (level === "beginner") {
+            plan = "30 mins walking + 15 mins light cardio + basic yoga";
+        } else if (level === "intermediate") {
+            plan = "HIIT 20 mins + jogging 30 mins + core workout";
+        } else {
+            plan = "HIIT 30 mins + strength training + cardio 30 mins";
+        }
+    }
+
+    if (goal === "muscle_gain") {
+        if (level === "beginner") {
+            plan = "Push-ups, squats, light weights (3 sets)";
+        } else if (level === "intermediate") {
+            plan = "Gym split: Chest/Back/Legs + protein diet";
+        } else {
+            plan = "Heavy lifting + progressive overload + strict diet";
+        }
+    }
+
+    if (goal === "fitness") {
+        if (level === "beginner") {
+            plan = "Yoga + walking + stretching";
+        } else if (level === "intermediate") {
+            plan = "Jogging + bodyweight exercises";
+        } else {
+            plan = "CrossFit + endurance training";
+        }
+    }
+
+    document.getElementById("result").innerText = "🏆 Your Plan: " + plan;
+}
+</script>
+
+</body>
+</html>
