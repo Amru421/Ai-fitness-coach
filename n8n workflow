@@ -1,0 +1,141 @@
+{
+  "name": "AI Fitness Coach",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "fitness-coach",
+        "httpMethod": "POST",
+        "responseMode": "lastNode"
+      },
+      "id": "Webhook",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const input = $json.body.text.split(',');\n\nreturn [{\n  goal: input[0]?.trim(),\n  weight: input[1]?.trim(),\n  height: input[2]?.trim(),\n  experience: input[3]?.trim()\n}];"
+      },
+      "id": "Parse",
+      "name": "Parse Input",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [400, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.goal}}",
+              "operation": "isEmpty"
+            }
+          ]
+        }
+      },
+      "id": "Validate",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [600, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-mini",
+        "messages": [
+          {
+            "role": "user",
+            "content": "You are an AI Fitness Coach.\n\nUser:\nGoal: {{$json.goal}}\nWeight: {{$json.weight}}\nHeight: {{$json.height}}\nExperience: {{$json.experience}}\n\nGive:\n1. Weekly workout plan\n2. Indian diet plan\n3. Daily motivation\n\nKeep it simple."
+          }
+        ]
+      },
+      "id": "OpenAI",
+      "name": "Generate Plan",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [800, 200],
+      "credentials": {
+        "openAiApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "OpenAI Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "responseData": "={{$json[\"choices\"][0][\"message\"][\"content\"]}}",
+        "responseCode": 200
+      },
+      "id": "Response",
+      "name": "Send Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1000, 200]
+    },
+    {
+      "parameters": {
+        "responseData": "Invalid input. Format: goal, weight, height, experience",
+        "responseCode": 400
+      },
+      "id": "Error",
+      "name": "Error Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [800, 400]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Parse Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Input": {
+      "main": [
+        [
+          {
+            "node": "Validate Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input": {
+      "main": [
+        [
+          {
+            "node": "Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate Plan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Plan": {
+      "main": [
+        [
+          {
+            "node": "Send Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
